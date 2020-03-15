@@ -3,12 +3,15 @@
 #include<pthread.h>
 #include <time.h>
 #include <assert.h>
+
 const int size = 1e5;
 const int no_of_threads = 4;
 const int RUNS = 25;
+
 int a[size],b[size];
 pthread_mutex_t lock;
 int part = -1,off;
+
 void merge(int* arr, int l, int m, int r) 
 { 
     int i, j, k; 
@@ -61,11 +64,13 @@ void mergeSort(int* arr, int l, int r,int off)
         mergeSort(arr, m+1, r,off); 
         merge(arr, l, m, r); 
     } 
-} 
+}
+
 int min(int a,int b){
 	if(a < b) return a;
 	return b;
 }
+
 void* mergesort(void* f){
 	int part = *((int*) f);
 	mergeSort(b,part*off,min((part + 1)*off - 1,size-1),0);
@@ -103,7 +108,7 @@ int main(){
 			parts[i] = i;
 		}
 
-		// printf("time elapsed by mergesort seq: %f\n",double((end- start)) / double(CLOCKS_PER_SEC));
+		printf("time elapsed by mergesort seq: %f\n",double((end- start)) / double(CLOCKS_PER_SEC));
 		double e1 =  double((end- start)) / double(CLOCKS_PER_SEC);
 		mean += e1;
 		start = clock();
@@ -121,7 +126,7 @@ int main(){
 		mergeSort(b,0,size-1,off);
 		end = clock();
 
-		// printf("time elapsed by mergesort parrallel with %d threads: %f\n",no_of_threads,double((end- start)) / double(CLOCKS_PER_SEC));
+		printf("time elapsed by mergesort parrallel with %d threads: %f\n",no_of_threads,double((end- start)) / double(CLOCKS_PER_SEC));
 		mean2 +=  double((end- start)) / double(CLOCKS_PER_SEC);
 		for (int i = 0; i < size; ++i)
 		{
