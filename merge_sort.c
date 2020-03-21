@@ -4,9 +4,9 @@
 #include <time.h>
 #include <assert.h>
 
-const int size = 1e5;
-const int no_of_threads = 4;
-const int RUNS = 25;
+#define size  100000
+#define no_of_threads 4
+#define RUNS  25
 
 int a[size],b[size];
 pthread_mutex_t lock;
@@ -87,6 +87,7 @@ int offset(){
 	return k;
 }
 int main(){
+	srand(time(0));
 	double mean = 0.0;
 	double mean2 = 0.0;
 	for (int i1 = 0; i1 < RUNS; ++i1)
@@ -108,8 +109,8 @@ int main(){
 			parts[i] = i;
 		}
 
-		printf("time elapsed by mergesort seq: %f\n",double((end- start)) / double(CLOCKS_PER_SEC));
-		double e1 =  double((end- start)) / double(CLOCKS_PER_SEC);
+		printf("time elapsed by mergesort seq: %f\n",(double) ((end- start)) / (double) (CLOCKS_PER_SEC));
+		double e1 =  (double) ((end- start)) / (double) (CLOCKS_PER_SEC);
 		mean += e1;
 		start = clock();
 		pthread_t pid[no_of_threads + 1];
@@ -126,8 +127,8 @@ int main(){
 		mergeSort(b,0,size-1,off);
 		end = clock();
 
-		printf("time elapsed by mergesort parrallel with %d threads: %f\n",no_of_threads,double((end- start)) / double(CLOCKS_PER_SEC));
-		mean2 +=  double((end- start)) / double(CLOCKS_PER_SEC);
+		printf("time elapsed by mergesort parrallel with %d threads: %f\n",no_of_threads,(double)((end- start)) / (double) (CLOCKS_PER_SEC));
+		mean2 +=  (double) ((end- start)) / (double) (CLOCKS_PER_SEC);
 		for (int i = 0; i < size; ++i)
 		{
 			if(b[i] != a[i]) printf("%d\n", i);
